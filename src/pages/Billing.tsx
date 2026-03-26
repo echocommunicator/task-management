@@ -16,13 +16,13 @@ const fadeUp = {
 
 const planFeatures = [
   'Unlimited tasks & subtasks',
-  'Team workload analytics',
-  'Role-based access control',
-  'Comments & file attachments',
-  'Priority & deadline tracking',
+  'WhatsApp + email notifications',
   'Designation hierarchy',
-  'Email notifications',
-  'Export reports',
+  'AI insights & analytics',
+  'Team workload dashboard',
+  'Role-based access control',
+  'Priority & deadline tracking',
+  'Comments & file attachments',
 ];
 
 const transactions = [
@@ -88,7 +88,7 @@ export function BillingPage() {
           </div>
 
           <div className="pt-4">
-            <h3 className="text-xl font-bold mb-1">TaskManager Pro</h3>
+            <h3 className="text-xl font-bold mb-1">Work-Sync Growth</h3>
             <p className="text-sm text-muted-foreground mb-5">Everything your team needs to stay productive</p>
 
             <div className="flex items-baseline gap-1 mb-6">

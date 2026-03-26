@@ -49,7 +49,7 @@ export function Layout({ children }: LayoutProps) {
       {/* Brand */}
       <div className="flex items-center gap-3 px-5 h-16 border-b border-sidebar-border">
         <Settings className="h-5 w-5 text-sidebar-primary" />
-        <span className="font-bold text-sm text-white truncate">{isPlatformAdmin ? 'Task Platform' : (orgName || 'TaskManager')}</span>
+        <span className="font-bold text-sm text-white truncate">{isPlatformAdmin ? 'Task Platform' : (orgName || 'Work-Sync')}</span>
       </div>
 
       {/* Navigation */}

@@ -229,7 +229,7 @@ export function ProfilePage() {
               </div>
 
               <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                Invite other organizations to TaskManager. When they sign up and subscribe, you earn credits towards your billing.
+                Invite other organizations to Work-Sync. When they sign up and subscribe, you earn credits towards your billing.
               </p>
 
               {/* Referral Code */}
@@ -269,7 +269,7 @@ export function ProfilePage() {
                   Copy Link
                 </button>
                 <a
-                  href={`https://wa.me/?text=${encodeURIComponent(`Try TaskManager for your team! Use my referral code ${referralCode} to get bonus credits.\n\n${referralLink}`)}`}
+                  href={`https://wa.me/?text=${encodeURIComponent(`Try Work-Sync for your team! Use my referral code ${referralCode} to get bonus credits.\n\n${referralLink}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-semibold hover:bg-muted transition-colors"

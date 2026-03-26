@@ -65,7 +65,7 @@ function MockSidebar({ active }: { active: string }) {
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
           <Settings className="h-4 w-4 text-primary-foreground" />
         </div>
-        <span className="text-sm font-bold tracking-tight text-white">TaskManager</span>
+        <span className="text-sm font-bold tracking-tight text-white">Work-Sync</span>
       </div>
       <nav className="flex-1 space-y-0.5 px-3 py-3">
         {navItems.map((item) => {
@@ -184,7 +184,7 @@ function SceneIntro() {
         transition={{ delay: 0.3, duration: 0.5 }}
         className="relative text-5xl font-extrabold tracking-tight text-foreground"
       >
-        TaskManager
+        Work-Sync
       </motion.h1>
 
       <motion.p
@@ -766,7 +766,7 @@ function SceneBilling() {
                 className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-[10px] font-semibold text-primary mb-2">
                 RECOMMENDED
               </motion.div>
-              <p className="text-sm font-bold text-foreground">TaskManager Pro</p>
+              <p className="text-sm font-bold text-foreground">Work-Sync Pro</p>
               <p className="text-[10px] text-muted-foreground">Everything your team needs</p>
             </div>
 
@@ -961,7 +961,7 @@ export default function Demo() {
       <div className="flex items-center justify-between border-b border-white/10 bg-black px-4 py-2">
         <Link to="/" className="flex items-center gap-2 text-sm text-white/60 hover:text-white/80">
           <Settings className="h-4 w-4" />
-          <span className="font-medium">TaskManager Demo</span>
+          <span className="font-medium">Work-Sync Demo</span>
         </Link>
 
         <div className="flex items-center gap-2">

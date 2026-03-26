@@ -2,9 +2,9 @@ import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import {
-  Settings, ArrowRight, CheckCircle, Users, Calendar, Flag,
-  MessageSquare, BarChart3, Sparkles, Clock, ListTodo, Target,
-  TrendingUp, Zap, Check, Crown, Gift,
+  ArrowRight, CheckCircle, Users, Calendar, Flag,
+  MessageSquare, BarChart3, Sparkles, Clock, AlertTriangle,
+  Bell, Shield, Check, Crown, Phone, Mail, Zap,
 } from 'lucide-react';
 
 /* ── Animation variants ─────────────────── */
@@ -107,20 +107,107 @@ function AnimatedCounter({ target, label }: { target: number; label: string }) {
 
 /* ── Data ────────────────────────────────── */
 
-const features = [
-  { icon: CheckCircle, title: 'Task Assignment', desc: 'Assign tasks to team members with priorities and deadlines.', gradient: 'from-sky-500/10 to-blue-500/10' },
-  { icon: Users, title: 'Team Workload', desc: 'Visualize workload across your team at a glance.', gradient: 'from-violet-500/10 to-purple-500/10' },
-  { icon: Calendar, title: 'Due Date Tracking', desc: 'Never miss a deadline with smart due date tracking.', gradient: 'from-amber-500/10 to-orange-500/10' },
-  { icon: Flag, title: 'Priority Management', desc: 'Set priorities from low to urgent for every task.', gradient: 'from-rose-500/10 to-pink-500/10' },
-  { icon: MessageSquare, title: 'Real-time Comments', desc: 'Collaborate with comments and file attachments.', gradient: 'from-fuchsia-500/10 to-purple-500/10' },
-  { icon: BarChart3, title: 'Progress Analytics', desc: 'Track completion rates, trends, and team performance.', gradient: 'from-cyan-500/10 to-teal-500/10' },
+const clientLogos = [
+  { src: '/logos/quess.png', alt: 'Quess Corp' },
+  { src: '/logos/motherson.jpg', alt: 'Motherson' },
+  { src: '/logos/hiranandani.png', alt: 'Hiranandani' },
+  { src: '/logos/audi.png', alt: 'Audi' },
+  { src: '/logos/college-dekho.jpg', alt: 'College Dekho' },
+  { src: '/logos/zolve.webp', alt: 'Zolve' },
+  { src: '/logos/capital-india.webp', alt: 'Capital India' },
+  { src: '/logos/ecofy.png', alt: 'Ecofy' },
+  { src: '/logos/zopper.png', alt: 'Zopper' },
+  { src: '/logos/alice-blue.png', alt: 'Alice Blue' },
+  { src: '/logos/ezeepay.png', alt: 'Ezeepay' },
+  { src: '/logos/incred.png', alt: 'InCred' },
+  { src: '/logos/seeds.png', alt: 'Seeds' },
+  { src: '/logos/growthvine.png', alt: 'GrowthVine' },
+  { src: '/logos/uhc.png', alt: 'UHC' },
+  { src: '/logos/car-trends.webp', alt: 'Car Trends' },
+  { src: '/logos/legitquest.png', alt: 'LegitQuest' },
+  { src: '/logos/evco.jpg', alt: 'EV Co' },
+  { src: '/logos/bluspring.png', alt: 'BluSpring' },
+  { src: '/logos/cubit.jpeg', alt: 'Cubit' },
+  { src: '/logos/smb-connect.jpg', alt: 'SMB Connect' },
+  { src: '/logos/rb.jpg', alt: 'RB' },
 ];
 
-const steps = [
-  { icon: ListTodo, title: 'Create Tasks', description: 'Define tasks with descriptions, priorities, and due dates.' },
-  { icon: Target, title: 'Assign', description: 'Assign to team members based on role and workload.' },
-  { icon: TrendingUp, title: 'Track', description: 'Monitor progress with real-time status updates.' },
-  { icon: Zap, title: 'Achieve', description: 'Complete tasks and celebrate team achievements.' },
+const painPoints = [
+  { icon: AlertTriangle, title: 'Tasks given, never tracked', desc: 'Managers assign tasks verbally or over chat. No record. No follow-up.' },
+  { icon: Clock, title: 'Deadlines missed silently', desc: 'Due dates pass. Nobody knows until the client complains.' },
+  { icon: Users, title: 'No accountability chain', desc: 'Who assigned it? Who was supposed to do it? Nobody remembers.' },
+  { icon: MessageSquare, title: 'Updates lost in WhatsApp', desc: 'Task status buried in chat groups. Impossible to extract.' },
+];
+
+const howItWorks = [
+  { step: 1, title: 'Assign', desc: 'Create a task with deadline, priority, and assignee. Instant WhatsApp + email notification.', icon: Flag },
+  { step: 2, title: 'Notify', desc: 'Assignee gets notified on WhatsApp and email. No more "I didn\'t know about it".', icon: Bell },
+  { step: 3, title: 'Update', desc: 'Status changes trigger automatic alerts. Everyone stays in the loop.', icon: BarChart3 },
+  { step: 4, title: 'Confirm', desc: 'Task completed? Assigner gets notified. Full audit trail. Zero ambiguity.', icon: CheckCircle },
+];
+
+const features = [
+  { icon: Phone, title: 'WhatsApp Alerts', desc: 'Instant task notifications on WhatsApp at every lifecycle stage.', gradient: 'from-emerald-500/10 to-green-500/10' },
+  { icon: Mail, title: 'Email Notifications', desc: 'Professional email alerts for assignments, updates, and completions.', gradient: 'from-sky-500/10 to-blue-500/10' },
+  { icon: Shield, title: 'Designation Hierarchy', desc: 'Define reporting chains. Managers see their team\'s tasks automatically.', gradient: 'from-violet-500/10 to-purple-500/10' },
+  { icon: Sparkles, title: 'AI Insights', desc: 'Smart analysis of overdue rates, workload imbalance, and bottlenecks.', gradient: 'from-amber-500/10 to-orange-500/10' },
+  { icon: Calendar, title: 'Due Date Tracking', desc: 'Never miss a deadline. Overdue tasks flagged automatically.', gradient: 'from-rose-500/10 to-pink-500/10' },
+  { icon: BarChart3, title: 'Team Analytics', desc: 'Completion rates, workload charts, and performance dashboards.', gradient: 'from-cyan-500/10 to-teal-500/10' },
+];
+
+const plans = [
+  {
+    name: 'Starter',
+    price: 'Free',
+    priceSuffix: '',
+    description: 'For small teams getting started',
+    highlighted: false,
+    features: [
+      'Up to 5 users',
+      '50 tasks per month',
+      'Email notifications',
+      'Basic dashboard',
+      'Task assignment & tracking',
+      'Comments & attachments',
+    ],
+    cta: 'Start Free',
+  },
+  {
+    name: 'Growth',
+    price: '₹199',
+    priceSuffix: '/user/mo',
+    description: 'For growing teams that need accountability',
+    highlighted: true,
+    features: [
+      'Unlimited users',
+      'Unlimited tasks',
+      'WhatsApp + email alerts',
+      'Designation hierarchy',
+      'AI insights & analytics',
+      'Team workload dashboard',
+      'Role-based access control',
+      'Priority support',
+    ],
+    cta: 'Start 14-Day Trial',
+  },
+  {
+    name: 'Enterprise',
+    price: '₹299',
+    priceSuffix: '/user/mo',
+    description: 'For organizations needing full control',
+    highlighted: false,
+    features: [
+      'Everything in Growth',
+      'API access',
+      'Custom roles & permissions',
+      'Satisfaction confirmation workflows',
+      'Advanced reporting & exports',
+      'Dedicated support',
+      'Custom integrations',
+      'SLA guarantee',
+    ],
+    cta: 'Contact Sales',
+  },
 ];
 
 /* ── Landing Page ────────────────────────── */
@@ -136,12 +223,14 @@ export function LandingPage() {
       <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-md">
         <div className="max-w-6xl mx-auto flex items-center justify-between h-16 px-6">
           <Link to="/" className="flex items-center gap-2 font-bold text-lg">
-            <Settings className="h-5 w-5 text-primary" />
-            TaskManager
+            <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+              <Zap className="h-4 w-4 text-white" />
+            </div>
+            <span>Work-Sync</span>
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+            <a href="#problem" className="hover:text-foreground transition-colors">Why Work-Sync</a>
             <a href="#features" className="hover:text-foreground transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-foreground transition-colors">How It Works</a>
             <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
           </nav>
           <div className="flex items-center gap-3">
@@ -158,16 +247,13 @@ export function LandingPage() {
         </div>
       </header>
 
-      {/* ── Hero ────────────────────────── */}
+      {/* ── Hero: The Pain ────────────── */}
       <section ref={heroRef} className="relative overflow-hidden">
-        {/* Gradient mesh bg */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute -top-24 left-1/4 w-[500px] h-[500px] bg-primary/8 rounded-full blur-[120px]" />
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-violet-400/6 rounded-full blur-[100px]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-purple-300/5 rounded-full blur-[80px]" />
         </div>
 
-        {/* Grid pattern */}
         <div
           className="absolute inset-0 -z-10 opacity-[0.03]"
           style={{
@@ -179,7 +265,6 @@ export function LandingPage() {
         <FloatingParticles />
 
         <motion.div style={{ y: heroY }} className="mx-auto max-w-4xl text-center px-6 py-28 lg:py-40">
-          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -190,34 +275,31 @@ export function LandingPage() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
             </span>
-            Task Management Reimagined
+            Part of the In-Sync family
           </motion.div>
 
-          {/* Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15 }}
             className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight"
           >
-            Manage Tasks with{' '}
+            You gave the task.{' '}
             <span className="bg-gradient-to-r from-violet-500 to-purple-600 bg-clip-text text-transparent">
-              Precision
+              Do you know if it's done?
             </span>
           </motion.h1>
 
-          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-6 text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto"
           >
-            A powerful task management platform that helps teams assign, track, and complete
-            work with clarity and confidence.
+            Hierarchical task accountability with WhatsApp + email alerts at every step
+            — built for how Indian teams actually work.
           </motion.p>
 
-          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -228,18 +310,17 @@ export function LandingPage() {
               to="/auth"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-primary text-primary-foreground font-medium shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all hover:scale-105"
             >
-              Get Started Free
+              Start Free — No Card Needed
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
-              href="#features"
+              href="#how-it-works"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl border font-medium hover:bg-muted transition-all hover:scale-105"
             >
-              Learn More
+              See How It Works
             </a>
           </motion.div>
 
-          {/* Trust signals */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -247,51 +328,138 @@ export function LandingPage() {
             className="mt-14 flex flex-wrap items-center justify-center gap-8 text-sm text-muted-foreground"
           >
             <span className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" />
-              Free to start
+              <Phone className="h-4 w-4 text-emerald-500" />
+              WhatsApp alerts
             </span>
             <span className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 text-primary" />
-              No credit card
+              <Mail className="h-4 w-4 text-blue-500" />
+              Email notifications
             </span>
             <span className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-primary" />
-              Team ready
+              <Shield className="h-4 w-4 text-primary" />
+              Designation hierarchy
             </span>
           </motion.div>
         </motion.div>
-
-        {/* Embedded product demo — outside parallax wrapper */}
-        <motion.div
-          initial={{ opacity: 0, y: 50, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.7 }}
-          className="relative mx-auto max-w-5xl px-4 pb-20 sm:px-6 sm:pb-28"
-        >
-          <div className="relative rounded-2xl border border-border/60 bg-black shadow-2xl shadow-primary/10 overflow-hidden">
-            {/* Browser-style top bar */}
-            <div className="flex items-center gap-2 border-b border-white/10 bg-black/80 px-4 py-2.5">
-              <div className="flex gap-1.5">
-                <div className="h-3 w-3 rounded-full bg-red-500/80" />
-                <div className="h-3 w-3 rounded-full bg-yellow-500/80" />
-                <div className="h-3 w-3 rounded-full bg-green-500/80" />
-              </div>
-              <div className="ml-3 flex-1 rounded-md bg-white/10 px-3 py-1 text-[11px] text-white/40">
-                app.taskmanager.com/demo
-              </div>
-            </div>
-            <iframe
-              src="/demo"
-              title="TaskManager Product Demo"
-              className="w-full border-0"
-              style={{ height: 'min(70vh, 540px)' }}
-              loading="eager"
-            />
-          </div>
-        </motion.div>
       </section>
 
-      {/* ── Features ────────────────────── */}
+      {/* ── Social Proof: Trusted By ──── */}
+      <section className="relative border-t border-border/50 bg-muted/30 py-14 sm:py-16">
+        <div className="mx-auto max-w-6xl px-6">
+          <AnimatedSection className="text-center mb-10">
+            <motion.p variants={fadeUp} className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+              Trusted by 100+ businesses across India
+            </motion.p>
+          </AnimatedSection>
+        </div>
+        {/* Marquee Row 1 */}
+        <div className="overflow-hidden">
+          <div className="flex animate-marquee gap-6 py-2">
+            {[...clientLogos.slice(0, 11), ...clientLogos.slice(0, 11)].map((logo, i) => (
+              <div
+                key={`r1-${i}`}
+                className="flex h-14 w-32 shrink-0 items-center justify-center rounded-xl border border-border/40 bg-background/80 px-4 py-2 grayscale opacity-50 transition-all duration-300 hover:border-border hover:opacity-100 hover:grayscale-0 hover:shadow-md"
+              >
+                <img src={logo.src} alt={logo.alt} className="max-h-8 max-w-full object-contain" loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Marquee Row 2 (reverse) */}
+        <div className="overflow-hidden mt-4">
+          <div className="flex animate-marquee-reverse gap-6 py-2">
+            {[...clientLogos.slice(11), ...clientLogos.slice(11)].map((logo, i) => (
+              <div
+                key={`r2-${i}`}
+                className="flex h-14 w-32 shrink-0 items-center justify-center rounded-xl border border-border/40 bg-background/80 px-4 py-2 grayscale opacity-50 transition-all duration-300 hover:border-border hover:opacity-100 hover:grayscale-0 hover:shadow-md"
+              >
+                <img src={logo.src} alt={logo.alt} className="max-h-8 max-w-full object-contain" loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── The Problem ───────────────── */}
+      <section id="problem" className="relative border-t border-border/50 py-24 sm:py-32 px-6">
+        <div className="max-w-6xl mx-auto">
+          <AnimatedSection className="text-center mb-20">
+            <motion.div
+              variants={fadeUp}
+              className="mb-4 inline-flex items-center gap-2 rounded-full bg-red-500/10 px-4 py-1.5 text-sm font-medium text-red-600"
+            >
+              <AlertTriangle className="h-3.5 w-3.5" />
+              The Problem
+            </motion.div>
+            <motion.h2 variants={fadeUp} className="text-3xl sm:text-5xl font-bold tracking-tight">
+              Tasks given.{' '}
+              <span className="text-red-500">Tasks forgotten.</span>
+            </motion.h2>
+            <motion.p variants={fadeUp} className="mt-5 text-lg text-muted-foreground max-w-2xl mx-auto">
+              In most Indian teams, task assignment happens over calls, WhatsApp, or verbal instructions.
+              There's no system, no tracking, and no accountability.
+            </motion.p>
+          </AnimatedSection>
+
+          <AnimatedSection className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {painPoints.map((point) => (
+              <motion.div
+                key={point.title}
+                variants={fadeUp}
+                className="rounded-2xl border border-red-200/50 bg-red-50/30 p-7"
+              >
+                <div className="h-12 w-12 rounded-xl bg-red-100 flex items-center justify-center mb-5">
+                  <point.icon className="h-6 w-6 text-red-500" />
+                </div>
+                <h3 className="font-semibold text-lg mb-2">{point.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{point.desc}</p>
+              </motion.div>
+            ))}
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* ── How Work-Sync Works ────────── */}
+      <section id="how-it-works" className="relative border-t border-border/50 bg-muted/30">
+        <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6 sm:py-32">
+          <AnimatedSection className="mx-auto max-w-2xl text-center">
+            <motion.div
+              variants={fadeUp}
+              className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary"
+            >
+              <Zap className="h-3.5 w-3.5" />
+              How Work-Sync Works
+            </motion.div>
+            <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight sm:text-5xl">
+              Assign → Notify → Update →{' '}
+              <span className="text-primary">Confirm</span>
+            </motion.h2>
+            <motion.p variants={fadeUp} className="mt-5 text-lg text-muted-foreground">
+              Every task gets tracked from assignment to completion with automatic alerts
+            </motion.p>
+          </AnimatedSection>
+
+          <AnimatedSection className="relative mt-20 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="pointer-events-none absolute top-14 left-[12%] right-[12%] hidden h-px bg-gradient-to-r from-transparent via-border to-transparent lg:block" />
+
+            {howItWorks.map((step) => (
+              <motion.div key={step.title} variants={fadeUp} className="relative text-center">
+                <div className="relative mx-auto mb-6 flex h-28 w-28 items-center justify-center">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 ring-1 ring-primary/20" />
+                  <div className="absolute -top-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground shadow-lg shadow-primary/25">
+                    {step.step}
+                  </div>
+                  <step.icon className="h-10 w-10 text-primary" />
+                </div>
+                <h3 className="text-lg font-semibold">{step.title}</h3>
+                <p className="mx-auto mt-2 max-w-[240px] text-sm leading-relaxed text-muted-foreground">{step.desc}</p>
+              </motion.div>
+            ))}
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* ── Features ──────────────────── */}
       <section id="features" className="relative border-t border-border/50 py-24 sm:py-32 px-6">
         <div className="max-w-6xl mx-auto">
           <AnimatedSection className="text-center mb-20">
@@ -302,18 +470,12 @@ export function LandingPage() {
               <Sparkles className="h-3.5 w-3.5" />
               Features
             </motion.div>
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl sm:text-5xl font-bold tracking-tight"
-            >
-              Everything you need to{' '}
-              <span className="text-primary">manage tasks</span>
+            <motion.h2 variants={fadeUp} className="text-3xl sm:text-5xl font-bold tracking-tight">
+              Built for{' '}
+              <span className="text-primary">Indian teams</span>
             </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto"
-            >
-              Built for teams who want clarity, accountability, and results.
+            <motion.p variants={fadeUp} className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto">
+              WhatsApp-first notifications, designation hierarchies, and the accountability your team needs.
             </motion.p>
           </AnimatedSection>
 
@@ -337,82 +499,23 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── How It Works ────────────────── */}
-      <section
-        id="how-it-works"
-        className="relative border-t border-border/50 bg-muted/30"
-      >
-        <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6 sm:py-32">
-          <AnimatedSection className="mx-auto max-w-2xl text-center">
-            <motion.div
-              variants={fadeUp}
-              className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary"
-            >
-              <Clock className="h-3.5 w-3.5" />
-              How It Works
-            </motion.div>
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl font-bold tracking-tight text-foreground sm:text-5xl"
-            >
-              Up and running in{' '}
-              <span className="text-primary">minutes</span>
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="mt-5 text-lg text-muted-foreground"
-            >
-              Four simple steps to transform your workflow
-            </motion.p>
-          </AnimatedSection>
-
-          <AnimatedSection className="relative mt-20 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {/* Connecting line (desktop only) */}
-            <div className="pointer-events-none absolute top-14 left-[12%] right-[12%] hidden h-px bg-gradient-to-r from-transparent via-border to-transparent lg:block" />
-
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.title}
-                variants={fadeUp}
-                className="relative text-center"
-              >
-                {/* Step number ring */}
-                <div className="relative mx-auto mb-6 flex h-28 w-28 items-center justify-center">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 ring-1 ring-primary/20" />
-                  <div className="absolute -top-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground shadow-lg shadow-primary/25">
-                    {i + 1}
-                  </div>
-                  <step.icon className="h-10 w-10 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground">
-                  {step.title}
-                </h3>
-                <p className="mx-auto mt-2 max-w-[240px] text-sm leading-relaxed text-muted-foreground">
-                  {step.description}
-                </p>
-              </motion.div>
-            ))}
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* ── Stats ───────────────────────── */}
-      <section className="border-t border-border/50 py-24 px-6">
+      {/* ── Stats ─────────────────────── */}
+      <section className="border-t border-border/50 bg-muted/30 py-24 px-6">
         <div className="max-w-4xl mx-auto">
           <AnimatedSection>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              <AnimatedCounter target={5000} label="Tasks Completed" />
+              <AnimatedCounter target={5000} label="Tasks Tracked" />
               <AnimatedCounter target={200} label="Teams Active" />
               <AnimatedCounter target={99} label="Uptime %" />
-              <AnimatedCounter target={50} label="Countries" />
+              <AnimatedCounter target={50} label="Cities" />
             </div>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* ── Pricing ──────────────────────── */}
-      <section id="pricing" className="border-t border-border/50 bg-muted/30">
-        <div className="mx-auto max-w-4xl px-4 py-24 sm:px-6 sm:py-32">
+      {/* ── Pricing ────────────────────── */}
+      <section id="pricing" className="border-t border-border/50">
+        <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6 sm:py-32">
           <AnimatedSection className="text-center">
             <motion.div
               variants={fadeUp}
@@ -421,92 +524,73 @@ export function LandingPage() {
               <Crown className="h-3.5 w-3.5" />
               Pricing
             </motion.div>
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl sm:text-5xl font-bold tracking-tight"
-            >
-              One Plan.{' '}
-              <span className="text-primary">Everything Included.</span>
+            <motion.h2 variants={fadeUp} className="text-3xl sm:text-5xl font-bold tracking-tight">
+              Start free.{' '}
+              <span className="text-primary">Scale when ready.</span>
             </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto"
-            >
-              No tiers, no hidden fees. Full access for your entire team.
+            <motion.p variants={fadeUp} className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto">
+              A genuine free tier to get started. Upgrade when your team outgrows it.
             </motion.p>
           </AnimatedSection>
 
-          <AnimatedSection className="mt-16 flex justify-center">
-            <motion.div
-              variants={fadeUp}
-              whileHover={{ y: -4, scale: 1.01 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="relative w-full max-w-md rounded-3xl border-2 border-primary/30 bg-card p-10 shadow-xl shadow-primary/5"
-            >
-              {/* Popular badge */}
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-1.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Most Popular
-                </span>
-              </div>
-
-              {/* Price */}
-              <div className="text-center pt-4 pb-8 border-b border-border/50">
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-5xl font-extrabold tracking-tight">₹199</span>
-                  <span className="text-muted-foreground text-lg">/user/mo</span>
-                </div>
-                <p className="mt-3 text-sm text-muted-foreground">
-                  Billed monthly. Cancel anytime.
-                </p>
-              </div>
-
-              {/* Welcome credits callout */}
-              <div className="mt-6 flex items-center gap-3 rounded-xl bg-primary/5 border border-primary/10 p-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <Gift className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold">₹100 Welcome Credits</p>
-                  <p className="text-xs text-muted-foreground">Free credits on every new account</p>
-                </div>
-              </div>
-
-              {/* Feature list */}
-              <ul className="mt-8 space-y-4">
-                {[
-                  'Unlimited tasks & projects',
-                  'Team collaboration & assignment',
-                  'Priority & due-date tracking',
-                  'Real-time comments & updates',
-                  'Dashboard analytics & charts',
-                  'Role-based access control',
-                  'User & designation management',
-                  'Dark mode & mobile responsive',
-                ].map((feature) => (
-                  <li key={feature} className="flex items-center gap-3 text-sm">
-                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/10">
-                      <Check className="h-3 w-3 text-primary" />
-                    </div>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-
-              {/* CTA */}
-              <Link
-                to="/auth"
-                className="mt-10 flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all hover:scale-[1.02]"
+          <AnimatedSection className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {plans.map((plan) => (
+              <motion.div
+                key={plan.name}
+                variants={fadeUp}
+                whileHover={{ y: -4, scale: 1.01 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className={`relative rounded-3xl p-8 ${
+                  plan.highlighted
+                    ? 'border-2 border-primary/30 bg-card shadow-xl shadow-primary/5'
+                    : 'border bg-card'
+                }`}
               >
-                Start Free Trial
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+                {plan.highlighted && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-1.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25">
+                      <Sparkles className="h-3.5 w-3.5" />
+                      Most Popular
+                    </span>
+                  </div>
+                )}
 
-              <p className="mt-4 text-center text-xs text-muted-foreground">
-                No credit card required. 14-day free trial.
-              </p>
-            </motion.div>
+                <div className={`${plan.highlighted ? 'pt-4' : ''}`}>
+                  <h3 className="text-lg font-bold">{plan.name}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{plan.description}</p>
+
+                  <div className="flex items-baseline gap-1 mt-6 mb-6">
+                    <span className="text-4xl font-extrabold tracking-tight">{plan.price}</span>
+                    {plan.priceSuffix && (
+                      <span className="text-muted-foreground text-lg">{plan.priceSuffix}</span>
+                    )}
+                  </div>
+
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feat) => (
+                      <li key={feat} className="flex items-center gap-3 text-sm">
+                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 flex-shrink-0">
+                          <Check className="h-3 w-3 text-primary" />
+                        </div>
+                        {feat}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link
+                    to="/auth"
+                    className={`flex items-center justify-center gap-2 w-full py-3 rounded-xl font-semibold transition-all hover:scale-[1.02] ${
+                      plan.highlighted
+                        ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:bg-primary/90'
+                        : 'border hover:bg-muted'
+                    }`}
+                  >
+                    {plan.cta}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
           </AnimatedSection>
         </div>
       </section>
@@ -519,20 +603,19 @@ export function LandingPage() {
               variants={fadeUp}
               className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 to-purple-700 p-12 sm:p-16 text-center text-white"
             >
-              {/* Decorative blobs */}
               <div className="absolute -top-20 -right-20 w-60 h-60 bg-white/5 rounded-full blur-3xl" />
               <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-white/5 rounded-full blur-3xl" />
 
               <div className="relative z-10">
-                <h2 className="text-3xl sm:text-4xl font-bold mb-4">Ready to get started?</h2>
+                <h2 className="text-3xl sm:text-4xl font-bold mb-4">Stop losing tasks in WhatsApp groups.</h2>
                 <p className="text-white/80 mb-10 max-w-md mx-auto text-lg">
-                  Join teams already using TaskManager to achieve their goals.
+                  Give your team accountability that actually works. Start free today.
                 </p>
                 <Link
                   to="/auth"
                   className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-white text-purple-700 font-semibold hover:bg-white/90 transition-all hover:scale-105 shadow-lg"
                 >
-                  Start Free
+                  Get Started Free
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -545,11 +628,13 @@ export function LandingPage() {
       <footer className="border-t py-8 px-6">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-medium">
-            <Settings className="h-4 w-4 text-primary" />
-            TaskManager
+            <div className="h-5 w-5 rounded bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+              <Zap className="h-3 w-3 text-white" />
+            </div>
+            Work-Sync
           </div>
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} TaskManager. All rights reserved.
+            &copy; {new Date().getFullYear()} In-Sync Solutions. All rights reserved.
           </p>
         </div>
       </footer>

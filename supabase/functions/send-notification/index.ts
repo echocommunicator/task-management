@@ -38,7 +38,7 @@ function buildEmailHtml(
       <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.05);">
         <tr>
           <td style="background:linear-gradient(135deg,#7c3aed,#9333ea);padding:28px 36px;">
-            <h1 style="margin:0;color:#fff;font-size:20px;font-weight:700;">TaskManager</h1>
+            <h1 style="margin:0;color:#fff;font-size:20px;font-weight:700;">Work-Sync</h1>
             <p style="margin:4px 0 0;color:rgba(255,255,255,0.8);font-size:12px;">In-Sync Solutions</p>
           </td>
         </tr>
@@ -57,7 +57,7 @@ function buildEmailHtml(
         </tr>
         <tr>
           <td style="padding:20px 36px;border-top:1px solid #e5e7eb;">
-            <p style="margin:0;color:#9ca3af;font-size:11px;text-align:center;">Automated notification from TaskManager &bull; In-Sync Solutions</p>
+            <p style="margin:0;color:#9ca3af;font-size:11px;text-align:center;">Automated notification from Work-Sync &bull; In-Sync Solutions</p>
           </td>
         </tr>
       </table>
@@ -70,7 +70,7 @@ function buildEmailHtml(
 function buildWhatsAppMessage(notification: NotificationRecord): string {
   const lines = [`*${notification.title}*`, '', notification.message];
   if (notification.task_id) {
-    lines.push('', '_Open TaskManager to view details._');
+    lines.push('', '_Open Work-Sync to view details._');
   }
   return lines.join('\n');
 }
@@ -127,7 +127,7 @@ Deno.serve(async (req) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            from: `TaskManager <${fromEmail}>`,
+            from: `Work-Sync <${fromEmail}>`,
             to: [profile.email],
             subject: notification.title,
             html: buildEmailHtml(notification, profile.full_name || 'there'),
