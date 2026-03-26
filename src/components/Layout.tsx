@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ListTodo, LogOut, User, Users, Shield, Briefcase, Settings, Menu, X, Sun, Moon } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { LayoutDashboard, ListTodo, LogOut, User, Users, Shield, Briefcase, Settings, Menu, X, Wallet } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { useNotifications } from '@/hooks/useNotifications';
 import { NotificationBell } from '@/components/tasks/NotificationBell';
@@ -17,7 +16,6 @@ export function Layout({ children }: LayoutProps) {
   const navigate = useNavigate();
   const { user, profile, isAdmin, userRole, orgName, signOut } = useAuth();
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
-  const { theme, setTheme } = useTheme();
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -29,6 +27,7 @@ export function Layout({ children }: LayoutProps) {
   const navItems = [
     { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { to: '/tasks', icon: ListTodo, label: 'Tasks' },
+    { to: '/billing', icon: Wallet, label: 'Billing' },
   ];
 
   const adminNavItems = isAdmin
@@ -108,13 +107,6 @@ export function Layout({ children }: LayoutProps) {
 
         {/* Actions */}
         <div className="flex items-center gap-1">
-          <button
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="p-2 rounded-lg hover:bg-sidebar-accent text-sidebar-foreground transition-colors"
-            title="Toggle theme"
-          >
-            {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </button>
           <button
             onClick={signOut}
             className="p-2 rounded-lg hover:bg-sidebar-accent text-sidebar-foreground transition-colors"
