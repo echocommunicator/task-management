@@ -12,6 +12,7 @@ import { UserManagementPage } from '@/pages/UserManagement';
 import { DesignationsPage } from '@/pages/Designations';
 import { AccessManagementPage } from '@/pages/AccessManagement';
 import { BillingPage } from '@/pages/Billing';
+import { ProfilePage } from '@/pages/Profile';
 import Demo from '@/pages/Demo';
 
 const queryClient = new QueryClient({
@@ -64,6 +65,7 @@ function AppRoutes() {
       <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
       <Route path="/tasks" element={<ProtectedRoute><TasksPage /></ProtectedRoute>} />
       <Route path="/tasks/:id" element={<ProtectedRoute><TaskDetailPage /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
       {/* Admin routes */}
       <Route path="/billing" element={<ProtectedRoute requiredAdmin><BillingPage /></ProtectedRoute>} />

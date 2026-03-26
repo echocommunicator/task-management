@@ -92,8 +92,8 @@ export function Layout({ children }: LayoutProps) {
 
       {/* Footer */}
       <div className="border-t border-sidebar-border p-4 space-y-3">
-        {/* User info */}
-        <div className="flex items-center gap-3">
+        {/* User info — clickable to profile */}
+        <Link to="/profile" className="flex items-center gap-3 rounded-lg p-1 -m-1 hover:bg-sidebar-accent transition-colors">
           <div className="h-8 w-8 rounded-full bg-sidebar-accent flex items-center justify-center flex-shrink-0">
             <User className="h-4 w-4 text-sidebar-primary" />
           </div>
@@ -103,7 +103,7 @@ export function Layout({ children }: LayoutProps) {
               <p className="text-[10px] text-sidebar-foreground capitalize">{userRole.replace('_', ' ')}</p>
             )}
           </div>
-        </div>
+        </Link>
 
         {/* Actions */}
         <div className="flex items-center gap-1">
