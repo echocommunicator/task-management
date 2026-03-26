@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Plus, BarChart3, AlertTriangle, Clock, CheckCircle } from 'lucide-react';
 import type { Task, TaskFilters as TaskFiltersType, CreateTaskInput, UpdateTaskInput } from '@/types/task';
 import { useAuth } from '@/lib/auth-context';
@@ -128,7 +129,7 @@ export function TasksPage() {
   };
 
   return (
-    <div className="flex gap-6">
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="flex gap-6">
       {/* Main Content */}
       <div className="flex-1 min-w-0">
         {/* Header */}
@@ -311,6 +312,6 @@ export function TasksPage() {
           isSubmitting={isSubmitting}
         />
       )}
-    </div>
+    </motion.div>
   );
 }

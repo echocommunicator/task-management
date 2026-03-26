@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
   ArrowLeft, Calendar, Clock, User, Tag,
   Play, CheckCircle, XCircle, Lock, RotateCcw, Edit, Trash2,
@@ -98,7 +99,7 @@ export function TaskDetailPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="max-w-4xl mx-auto">
       {/* Back + Header */}
       <div className="mb-6">
         <Link to="/tasks" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 mb-4">
@@ -372,6 +373,6 @@ export function TaskDetailPage() {
           isSubmitting={isSubmitting}
         />
       )}
-    </div>
+    </motion.div>
   );
 }

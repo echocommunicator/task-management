@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { Plus, Edit2, Trash2, X, Briefcase, ArrowUpRight } from 'lucide-react';
 import type { Designation, ReportingRelation, AppRole } from '@/types/user';
 import { APP_ROLES, getRoleBadgeColor } from '@/types/user';
@@ -208,7 +209,7 @@ export function DesignationsPage() {
   }
 
   return (
-    <div>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Briefcase className="h-6 w-6" />
@@ -312,7 +313,7 @@ export function DesignationsPage() {
         isSubmitting={isSubmitting}
         error={error}
       />
-    </div>
+    </motion.div>
   );
 }
 

@@ -1,8 +1,11 @@
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ListTodo, LogOut, User, Users, Shield, Briefcase, Settings } from 'lucide-react';
+import { LayoutDashboard, ListTodo, LogOut, User, Users, Shield, Briefcase, Settings, Menu, X, Sun, Moon } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { useAuth } from '@/lib/auth-context';
 import { useNotifications } from '@/hooks/useNotifications';
 import { NotificationBell } from '@/components/tasks/NotificationBell';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 
 interface LayoutProps {
@@ -14,13 +17,20 @@ export function Layout({ children }: LayoutProps) {
   const navigate = useNavigate();
   const { user, profile, isAdmin, userRole, orgName, signOut } = useAuth();
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
+  const { theme, setTheme } = useTheme();
+  const isMobile = useIsMobile();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Auto-close sidebar on navigate
+  useEffect(() => {
+    if (isMobile) setSidebarOpen(false);
+  }, [location.pathname, isMobile]);
 
   const navItems = [
-    { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
+    { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { to: '/tasks', icon: ListTodo, label: 'Tasks' },
   ];
 
-  // Admin-only nav items
   const adminNavItems = isAdmin
     ? [
         { to: '/users', icon: Users, label: 'Users' },
@@ -29,92 +39,149 @@ export function Layout({ children }: LayoutProps) {
       ]
     : [];
 
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto flex h-14 items-center px-4">
-          <div className="flex items-center gap-6">
-            <Link to="/" className="font-bold text-lg flex items-center gap-2">
-              <Settings className="h-5 w-5 text-primary" />
-              {orgName || 'TaskManager'}
-            </Link>
-            <nav className="flex items-center gap-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className={cn(
-                    'flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-colors',
-                    location.pathname === item.to
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                  )}
-                >
-                  <item.icon className="h-4 w-4" />
-                  {item.label}
-                </Link>
-              ))}
+  const sidebarContent = (
+    <div className="flex flex-col h-full">
+      {/* Brand */}
+      <div className="flex items-center gap-3 px-5 h-16 border-b border-sidebar-border">
+        <Settings className="h-5 w-5 text-sidebar-primary" />
+        <span className="font-bold text-sm text-white truncate">{orgName || 'TaskManager'}</span>
+      </div>
 
-              {adminNavItems.length > 0 && (
-                <>
-                  <div className="h-5 w-px bg-border mx-1" />
-                  {adminNavItems.map((item) => (
-                    <Link
-                      key={item.to}
-                      to={item.to}
-                      className={cn(
-                        'flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-colors',
-                        location.pathname === item.to
-                          ? 'bg-primary/10 text-primary'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                      )}
-                    >
-                      <item.icon className="h-4 w-4" />
-                      {item.label}
-                    </Link>
-                  ))}
-                </>
-              )}
-            </nav>
-          </div>
+      {/* Navigation */}
+      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        {navItems.map((item) => (
+          <Link
+            key={item.to}
+            to={item.to}
+            className={cn(
+              'flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors',
+              location.pathname === item.to
+                ? 'bg-sidebar-accent text-sidebar-primary'
+                : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-white'
+            )}
+          >
+            <item.icon className="h-4.5 w-4.5" />
+            {item.label}
+          </Link>
+        ))}
 
-          <div className="ml-auto flex items-center gap-3">
-            <NotificationBell
-              notifications={notifications}
-              unreadCount={unreadCount}
-              onMarkAsRead={(id) => markAsRead.mutate(id)}
-              onMarkAllAsRead={() => markAllAsRead.mutate()}
-              onNotificationClick={(n) => {
-                if (n.task_id) navigate(`/tasks/${n.task_id}`);
-              }}
-            />
-
-            <div className="flex items-center gap-2 text-sm">
-              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <User className="h-4 w-4 text-primary" />
-              </div>
-              <div className="hidden md:block">
-                <p className="font-medium text-xs leading-tight">{profile?.full_name || user?.email}</p>
-                {userRole && (
-                  <p className="text-[10px] text-muted-foreground capitalize">{userRole.replace('_', ' ')}</p>
-                )}
-              </div>
+        {adminNavItems.length > 0 && (
+          <>
+            <div className="pt-4 pb-2 px-3">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-sidebar-foreground/50">
+                Admin
+              </span>
             </div>
+            {adminNavItems.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={cn(
+                  'flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors',
+                  location.pathname === item.to
+                    ? 'bg-sidebar-accent text-sidebar-primary'
+                    : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-white'
+                )}
+              >
+                <item.icon className="h-4.5 w-4.5" />
+                {item.label}
+              </Link>
+            ))}
+          </>
+        )}
+      </nav>
 
-            <button
-              onClick={signOut}
-              className="p-2 rounded-md hover:bg-muted text-muted-foreground"
-              title="Sign Out"
-            >
-              <LogOut className="h-4 w-4" />
-            </button>
+      {/* Footer */}
+      <div className="border-t border-sidebar-border p-4 space-y-3">
+        {/* User info */}
+        <div className="flex items-center gap-3">
+          <div className="h-8 w-8 rounded-full bg-sidebar-accent flex items-center justify-center flex-shrink-0">
+            <User className="h-4 w-4 text-sidebar-primary" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs font-medium text-white truncate">{profile?.full_name || user?.email}</p>
+            {userRole && (
+              <p className="text-[10px] text-sidebar-foreground capitalize">{userRole.replace('_', ' ')}</p>
+            )}
           </div>
         </div>
-      </header>
+
+        {/* Actions */}
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="p-2 rounded-lg hover:bg-sidebar-accent text-sidebar-foreground transition-colors"
+            title="Toggle theme"
+          >
+            {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+          <button
+            onClick={signOut}
+            className="p-2 rounded-lg hover:bg-sidebar-accent text-sidebar-foreground transition-colors"
+            title="Sign Out"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Mobile hamburger */}
+      {isMobile && (
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="fixed left-4 top-4 z-50 p-2 rounded-lg bg-sidebar-background text-white shadow-lg"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+      )}
+
+      {/* Mobile overlay */}
+      {isMobile && sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          'fixed top-0 left-0 z-50 h-screen w-64 bg-sidebar-background text-sidebar-foreground transition-transform duration-300',
+          isMobile && !sidebarOpen ? '-translate-x-full' : 'translate-x-0',
+          !isMobile && 'translate-x-0'
+        )}
+      >
+        {isMobile && sidebarOpen && (
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="absolute right-3 top-4 p-1 rounded-lg hover:bg-sidebar-accent text-sidebar-foreground"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
+        {sidebarContent}
+      </aside>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-6">{children}</main>
+      <main className="min-h-screen p-6 pt-16 lg:ml-64 lg:pt-8">
+        {/* Top bar with notification */}
+        <div className="flex justify-end mb-4">
+          <NotificationBell
+            notifications={notifications}
+            unreadCount={unreadCount}
+            onMarkAsRead={(id) => markAsRead.mutate(id)}
+            onMarkAllAsRead={() => markAllAsRead.mutate()}
+            onNotificationClick={(n) => {
+              if (n.task_id) navigate(`/tasks/${n.task_id}`);
+            }}
+          />
+        </div>
+        {children}
+      </main>
     </div>
   );
 }

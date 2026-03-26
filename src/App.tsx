@@ -7,6 +7,7 @@ import { DashboardPage } from '@/pages/Dashboard';
 import { TasksPage } from '@/pages/Tasks';
 import { TaskDetailPage } from '@/pages/TaskDetail';
 import { AuthPage } from '@/pages/Auth';
+import { LandingPage } from '@/pages/Landing';
 import { UserManagementPage } from '@/pages/UserManagement';
 import { DesignationsPage } from '@/pages/Designations';
 import { AccessManagementPage } from '@/pages/AccessManagement';
@@ -36,7 +37,7 @@ function ProtectedRoute({ children, requiredAdmin }: { children: React.ReactNode
   }
 
   if (requiredAdmin && !isAdmin) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <Layout>{children}</Layout>;
@@ -55,8 +56,9 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/auth" element={user ? <Navigate to="/" replace /> : <AuthPage />} />
-      <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+      <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <LandingPage />} />
+      <Route path="/auth" element={user ? <Navigate to="/dashboard" replace /> : <AuthPage />} />
+      <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
       <Route path="/tasks" element={<ProtectedRoute><TasksPage /></ProtectedRoute>} />
       <Route path="/tasks/:id" element={<ProtectedRoute><TaskDetailPage /></ProtectedRoute>} />
 

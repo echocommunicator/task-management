@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { Shield, Save, Loader2 } from 'lucide-react';
 import type { Designation, FeaturePermission, DesignationAccess } from '@/types/user';
 import { supabase } from '@/lib/supabase';
@@ -178,7 +179,7 @@ export function AccessManagementPage() {
   }
 
   return (
-    <div>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Shield className="h-6 w-6" />
@@ -320,6 +321,6 @@ export function AccessManagementPage() {
           </div>
         </>
       )}
-    </div>
+    </motion.div>
   );
 }

@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { BarChart3, Clock, AlertTriangle, CheckCircle, ListTodo, Users } from 'lucide-react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
 import { useTaskStats } from '@/hooks/useTaskStats';
@@ -17,6 +18,46 @@ const PRIORITY_COLORS: Record<string, string> = {
   urgent: '#ef4444',
 };
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
+const kpiCards = [
+  {
+    key: 'myOpen',
+    label: 'MY OPEN TASKS',
+    icon: ListTodo,
+    gradient: 'from-sky-500 to-blue-600',
+  },
+  {
+    key: 'overdue',
+    label: 'OVERDUE TASKS',
+    icon: AlertTriangle,
+    gradient: 'from-rose-500 to-pink-600',
+  },
+  {
+    key: 'completed',
+    label: 'COMPLETED THIS WEEK',
+    icon: CheckCircle,
+    gradient: 'from-emerald-500 to-green-600',
+  },
+  {
+    key: 'total',
+    label: 'TOTAL TASKS',
+    icon: Clock,
+    gradient: 'from-violet-500 to-purple-600',
+  },
+];
+
 export function DashboardPage() {
   const { stats, isLoading } = useTaskStats();
 
@@ -24,42 +65,48 @@ export function DashboardPage() {
     return <div className="text-center py-12 text-muted-foreground">Loading dashboard...</div>;
   }
 
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+  const kpiValues: Record<string, number> = {
+    myOpen: stats?.myOpenTasks ?? 0,
+    overdue: stats?.overdueTasks ?? 0,
+    completed: stats?.completedThisWeek ?? 0,
+    total: stats?.totalTasks ?? 0,
+  };
 
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard
-          icon={<ListTodo className="h-5 w-5 text-blue-600" />}
-          label="My Open Tasks"
-          value={stats?.myOpenTasks ?? 0}
-          bgColor="bg-blue-50"
-        />
-        <StatCard
-          icon={<AlertTriangle className="h-5 w-5 text-red-600" />}
-          label="Overdue Tasks"
-          value={stats?.overdueTasks ?? 0}
-          bgColor="bg-red-50"
-        />
-        <StatCard
-          icon={<CheckCircle className="h-5 w-5 text-green-600" />}
-          label="Completed This Week"
-          value={stats?.completedThisWeek ?? 0}
-          bgColor="bg-green-50"
-        />
-        <StatCard
-          icon={<Clock className="h-5 w-5 text-purple-600" />}
-          label="Total Tasks"
-          value={stats?.totalTasks ?? 0}
-          bgColor="bg-purple-50"
-        />
-      </div>
+  return (
+    <motion.div variants={container} initial="hidden" animate="show">
+      {/* Header */}
+      <motion.div variants={fadeUp} className="mb-8">
+        <h1 className="text-3xl font-bold">
+          Task{' '}
+          <span className="bg-gradient-to-r from-emerald-500 to-green-600 bg-clip-text text-transparent">
+            Command Center
+          </span>
+        </h1>
+        <p className="text-muted-foreground mt-1">Monitor and manage your team's progress</p>
+      </motion.div>
+
+      {/* KPI Cards */}
+      <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {kpiCards.map((card) => (
+          <div
+            key={card.key}
+            className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${card.gradient} p-5 text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg`}
+          >
+            <div className="relative z-10">
+              <p className="text-3xl font-bold">{kpiValues[card.key]}</p>
+              <p className="text-xs font-semibold uppercase tracking-wider mt-1 text-white/80">
+                {card.label}
+              </p>
+            </div>
+            <card.icon className="absolute bottom-3 right-3 h-12 w-12 opacity-[0.07]" strokeWidth={1.5} />
+          </div>
+        ))}
+      </motion.div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <motion.div variants={fadeUp} className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Status Distribution Pie */}
-        <div className="rounded-lg border bg-card p-6">
+        <div className="rounded-2xl border bg-card p-5">
           <h3 className="font-semibold text-sm mb-4 flex items-center gap-2">
             <BarChart3 className="h-4 w-4" />
             Task Status Distribution
@@ -91,7 +138,7 @@ export function DashboardPage() {
         </div>
 
         {/* Priority Distribution Bar */}
-        <div className="rounded-lg border bg-card p-6">
+        <div className="rounded-2xl border bg-card p-5">
           <h3 className="font-semibold text-sm mb-4 flex items-center gap-2">
             <BarChart3 className="h-4 w-4" />
             Priority Breakdown
@@ -115,10 +162,10 @@ export function DashboardPage() {
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {/* Weekly Trend */}
-      <div className="rounded-lg border bg-card p-6 mb-8">
+      <motion.div variants={fadeUp} className="rounded-2xl border bg-card p-5 mb-8">
         <h3 className="font-semibold text-sm mb-4">Tasks Created vs Completed Over Time</h3>
         {stats?.weeklyTrend && stats.weeklyTrend.length > 0 ? (
           <ResponsiveContainer width="100%" height={300}>
@@ -127,8 +174,8 @@ export function DashboardPage() {
               <YAxis tick={{ fontSize: 12 }} />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="created" stroke="#3b82f6" strokeWidth={2} name="Created" />
-              <Line type="monotone" dataKey="completed" stroke="#22c55e" strokeWidth={2} name="Completed" />
+              <Line type="monotone" dataKey="created" stroke="#22c55e" strokeWidth={2} name="Created" />
+              <Line type="monotone" dataKey="completed" stroke="#16a34a" strokeWidth={2} name="Completed" />
             </LineChart>
           </ResponsiveContainer>
         ) : (
@@ -136,11 +183,11 @@ export function DashboardPage() {
             No trend data available
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Team Workload */}
       {stats?.teamWorkload && stats.teamWorkload.length > 0 && (
-        <div className="rounded-lg border bg-card p-6">
+        <motion.div variants={fadeUp} className="rounded-2xl border bg-card p-5">
           <h3 className="font-semibold text-sm mb-4 flex items-center gap-2">
             <Users className="h-4 w-4" />
             Team Workload
@@ -150,27 +197,11 @@ export function DashboardPage() {
               <XAxis type="number" tick={{ fontSize: 12 }} />
               <YAxis dataKey="name" type="category" tick={{ fontSize: 12 }} width={120} />
               <Tooltip />
-              <Bar dataKey="tasks" fill="#6366f1" name="Open Tasks" />
+              <Bar dataKey="tasks" fill="#22c55e" name="Open Tasks" />
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        </motion.div>
       )}
-    </div>
-  );
-}
-
-function StatCard({ icon, label, value, bgColor }: { icon: React.ReactNode; label: string; value: number; bgColor: string }) {
-  return (
-    <div className="rounded-lg border bg-card p-5">
-      <div className="flex items-center gap-3">
-        <div className={`p-2.5 rounded-lg ${bgColor}`}>
-          {icon}
-        </div>
-        <div>
-          <p className="text-sm text-muted-foreground">{label}</p>
-          <p className="text-2xl font-bold">{value}</p>
-        </div>
-      </div>
-    </div>
+    </motion.div>
   );
 }
