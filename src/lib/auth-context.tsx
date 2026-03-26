@@ -108,6 +108,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .select('role')
           .eq('user_id', currentUser.id)
           .eq('is_active', true)
+          .order('created_at', { ascending: true })
+          .limit(1)
           .maybeSingle(),
         orgId
           ? supabase
