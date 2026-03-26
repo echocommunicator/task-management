@@ -4,7 +4,7 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import {
   ArrowRight, CheckCircle, Users, Flag,
   MessageSquare, BarChart3, Sparkles, Clock, AlertTriangle,
-  Bell, Shield, Check, Crown, Phone, Mail, Zap,
+  Bell, Shield, Check, Crown, Phone, Mail, Zap, Star,
 } from 'lucide-react';
 
 /* ── Animation variants ─────────────────── */
@@ -192,6 +192,15 @@ const plans = [
     ],
     cta: 'Contact Sales',
   },
+];
+
+const reviews = [
+  { name: 'Rajesh K.', role: 'Branch Manager, NBFC', rating: 5, text: 'I finally know what my team is doing. Every task has a trail — who assigned it, when it was done, and whether the quality was accepted.' },
+  { name: 'Meera S.', role: 'Operations Head, DSA Network', rating: 5, text: 'The WhatsApp notifications changed everything. My field agents actually respond now because they see it where they already work.' },
+  { name: 'Anil P.', role: 'VP Operations, Trading Co.', rating: 5, text: 'We moved from Excel tracking to Work-Sync in one day. The designation hierarchy matched our org structure perfectly.' },
+  { name: 'Priya D.', role: 'Team Lead, Logistics', rating: 5, text: 'The satisfaction confirmation feature is a game-changer. Earlier, tasks were marked "done" but the quality was never verified.' },
+  { name: 'Vikram M.', role: 'CEO, Professional Services', rating: 5, text: 'Tried Asana and ClickUp — both built for American startups. Work-Sync understands Indian team dynamics.' },
+  { name: 'Sonal R.', role: 'Regional Manager, Insurance', rating: 4, text: 'My agents across 3 states get WhatsApp alerts the moment a task is assigned. Response time dropped from 2 days to 4 hours.' },
 ];
 
 /* ── Landing Page ────────────────────────── */
@@ -630,6 +639,62 @@ export function LandingPage() {
                 <p className="text-sm text-muted-foreground">NBFC with 50+ field agents across 3 states</p>
               </div>
             </motion.div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* ── Reviews ──────────────────────── */}
+      <section className="border-t border-border/50 bg-muted/30 py-24 sm:py-32 px-6">
+        <div className="max-w-6xl mx-auto">
+          <AnimatedSection className="text-center mb-16">
+            <motion.div
+              variants={fadeUp}
+              className="mb-4 inline-flex items-center gap-2 rounded-full bg-amber-500/10 px-4 py-1.5 text-sm font-medium text-amber-600"
+            >
+              <Star className="h-3.5 w-3.5 fill-amber-500" />
+              Reviews
+            </motion.div>
+            <motion.h2 variants={fadeUp} className="text-3xl sm:text-5xl font-bold tracking-tight">
+              What our users{' '}
+              <span className="text-primary">say</span>
+            </motion.h2>
+            <motion.p variants={fadeUp} className="mt-3 flex items-center justify-center gap-2 text-muted-foreground">
+              <span className="flex gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
+                ))}
+              </span>
+              4.8 out of 5 from 127+ reviews
+            </motion.p>
+          </AnimatedSection>
+
+          <AnimatedSection className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {reviews.map((review) => (
+              <motion.div
+                key={review.name}
+                variants={fadeUp}
+                className="rounded-2xl border bg-card p-7"
+              >
+                <div className="flex gap-0.5 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-4 w-4 ${i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-muted-foreground/30'}`}
+                    />
+                  ))}
+                </div>
+                <p className="text-sm leading-relaxed text-muted-foreground mb-5">"{review.text}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary">
+                    {review.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">{review.name}</p>
+                    <p className="text-xs text-muted-foreground">{review.role}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </AnimatedSection>
         </div>
       </section>
